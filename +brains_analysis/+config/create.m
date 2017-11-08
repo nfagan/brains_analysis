@@ -16,7 +16,7 @@ PATHS.data.root = '/Volumes/My Passport/NICK/Chang Lab 2016/brains';
 PATHS.data.free_viewing = 'free_viewing';
 
 DEPENDENCIES = struct();
-DEPENDENCIES.repositories = { 'shared_utils', 'plexon', 'eyelink', 'global', 'h5_api' };
+DEPENDENCIES.repositories = { 'shared_utils', 'plexon', 'eyelink', 'global', 'h5_api', 'jsonlab-1.5' };
 
 conf.PATHS = PATHS;
 conf.DEPENDENCIES = DEPENDENCIES;

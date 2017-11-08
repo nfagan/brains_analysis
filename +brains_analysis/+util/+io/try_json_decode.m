@@ -12,7 +12,11 @@ import shared_utils.assertions.*;
 assert__file_exists( filepath );
 
 try
-  out = jsondecode( fileread(filepath) );
+  if ( verLessThan('matlab', 'R2017a') )
+    out = loadjson( filepath );
+  else
+    out = jsondecode( fileread(filepath) );
+  end
 catch err
   msg = sprintf( ['The following error ocurred when attempting to parse' ...
     , ' the .json file ''%s''.'], filepath );

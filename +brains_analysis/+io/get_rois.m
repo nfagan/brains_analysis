@@ -12,6 +12,6 @@ if ( nargin < 1 || isempty(conf) ), conf = brains_analysis.config.load(); end
 brains_analysis.util.assertions.assert__is_config( conf );
 
 roi_path = fullfile( conf.PATHS.data.root, conf.PATHS.data.free_viewing, 'raw', 'rois.json' );
-rois = jsondecode( fileread(roi_path) );
+rois = brains_analysis.util.io.try_json_decode( roi_path );
 
 end

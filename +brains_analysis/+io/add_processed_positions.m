@@ -16,6 +16,8 @@ if ( nargin < 1 || isempty(conf) ), conf = brains_analysis.config.load(); end
 data_dir = fullfile( conf.PATHS.data.root, conf.PATHS.data.free_viewing, 'raw' );
 save_p = fullfile( conf.PATHS.data.root, conf.PATHS.data.free_viewing, 'processed', 'edf' );
 
+assert__is_dir( save_p, 'raw_positions.h5 folder' );
+
 if ( nargin < 2 )
   sessions = dirnames( data_dir, 'folders', true );
 else
