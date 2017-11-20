@@ -17,7 +17,7 @@ pos_io = h5_api( pos_h5 );
 
 %%  SAVE
 
-sessions = { '110217' };
+sessions = { '110317_2' };
 
 brains_analysis.io.add_processed_positions( conf, sessions );
 

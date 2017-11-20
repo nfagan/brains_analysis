@@ -1,8 +1,14 @@
-function [pos_m1_on_m2, origin] = get_projected_position_and_origin(m1, m2, pos)
+function [pos_m1_on_m2, origin] = get_projected_position_and_origin(m1, m2, pos, screen_const)
 
 import brains_analysis.gaze.process.*;
 import brains_analysis.gaze.util.*;
 import shared_utils.assertions.*;
+
+if ( nargin < 4 )
+  screen_const = get_screen_constants();
+else
+  assert__isa( screen_const, 'struct' );
+end
 
 required_fields = { 'eye_to_ground_cm', 'eye_to_monitor_left_cm', 'eye_to_monitor_front_cm' };
 assert__isa( m1, 'struct' );
@@ -10,8 +16,6 @@ assert__isa( m2, 'struct' );
 assert__isa( pos, 'double' );
 assert__are_fields( m1, required_fields );
 assert__are_fields( m2, required_fields );
-
-screen_const = get_screen_constants();
 
 screen_rect_px = screen_const.SCREEN_RECT_PX;
 screen_dims_cm = [ screen_const.SCREEN_WIDTH_CM, screen_const.SCREEN_HEIGHT_CM ];

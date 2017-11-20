@@ -1,6 +1,14 @@
-function out = meas_xls2mat( meas )
+function out = meas_xls2mat( meas, lfp_channel_spec )
 
 import shared_utils.assertions.*;
+
+if ( nargin < 2 )
+  lfp_channel_spec = 'FP'; 
+else
+  assert__isa( lfp_channel_spec, 'char', 'the lfp channel specifier' );
+  assert( any(strcmp({'FP', 'WB'}, lfp_channel_spec)) ...
+    , 'Lfp channel specifier can be ''FP'' or ''WB''.' );
+end
 
 assert__isa( meas, 'cell', 'the excel measurements' );
 assert( strcmp(meas{1, 1}, 'Session'), 'The first row label must be ''Sesssion''.' );
@@ -61,7 +69,7 @@ for i = 1:numel(session_ids)
     end
     
     %   lfp
-    channel_labels{end+1} = sprintf( 'FP%s', chan_lab );
+    channel_labels{end+1} = sprintf( '%s%s', lfp_channel_spec, chan_lab );
     unit_numbers(end+1) = NaN;
     region_labels{end+1} = region;
     date_labels{end+1} = date_lab;

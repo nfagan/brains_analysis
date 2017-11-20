@@ -39,6 +39,15 @@ for i = 1:numel(session_dirs)
   
   start = get_plex_events( pl2_file, {'AI02'}, 'AI02' );
   
+  if ( all(meta_labels.contains({'110317', 'session__2'})) )
+    fprintf( ['\n\nWARNING: Manually removing offending start times from' ...
+      , ' 110317 / session 2.'] );
+    assert( numel(start) == 12 );
+    ind = [ false; diff(start)/1e3 < 300 ];
+    assert( sum(ind) == 4 );
+    start( ind ) = [];
+  end
+  
   cont = Container( start, meta_labels.repeat(numel(start)) );
   cont = cont.require_fields( 'edf_filenumber' );
   pair_ids = arrayfun( @(x) ['edf_filenumber__', num2str(x)], 1:numel(start), 'un', false );
