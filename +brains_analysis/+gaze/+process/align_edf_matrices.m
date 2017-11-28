@@ -37,7 +37,7 @@ for i = 1:numel(I)
   assert( dat2.time(start2) == dat2.start_time, 'Start times must match!' );
   
   sz1 = size( dat1.(fields_to_resize{1}), 1 );
-  sz2 = size( dat2.(fields_to_resize{2}), 1 );
+  sz2 = size( dat2.(fields_to_resize{1}), 1 );
   
   for k = 2:numel(fields_to_resize)
     msg = 'Sizes must match across resize fields.';

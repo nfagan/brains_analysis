@@ -17,7 +17,7 @@ pos_io = h5_api( pos_h5 );
 
 %%  SAVE
 
-sessions = { '110317_2' };
+sessions = { '112117_1' };
 
 brains_analysis.io.add_processed_positions( conf, sessions );
 
@@ -26,18 +26,59 @@ brains_analysis.io.add_processed_positions( conf, sessions );
 key = pos_io.read( '/Key' );
 pos = pos_io.read( '/Position' );
 
+% key = shared_utils.io.fload( fullfile('H:\brains\free_viewing\raw\112117_1', 'key.mat') );
+% pos = shared_utils.io.fload( fullfile('H:\brains\free_viewing\raw\112117_1', 'positions.mat') );
+
 %%  bounds
 
 rois = roi_file_to_container( get_rois() );
-plex_starts = get_plex_starts( conf, sessions );
+
+jess = rois({'siqi'}); 
+jess('monkey') = 'jessica';
+rois = append( rois, jess );
+
+% rois.data(:, 2) = rois.data(:, 2) - 1e3;
+% rois.data(:, 4) = rois.data(:, 4) + 1e3;
 
 subset = pos;
-[in_bounds, bounds_key] = get_in_bounds_index( subset, rois.only('face'), key );
+[in_bounds, bounds_key] = get_in_bounds_index( subset, rois({'eyes'}), key );
 
 %%
 
-m1 = in_bounds.only( {'pair_id__2', 'kuro'} );
-m2 = in_bounds.only( {'pair_id__2', 'ephron'} );
+m1 = in_bounds.only( {'pair_id__1', 'siqi'} );
+m2 = in_bounds.only( {'pair_id__1', 'jessica'} );
+
+n_samples = 1000;
+
+figure(1); clf();
+subplot( 2, 1, 1 );
+m1_bounds = m1.data( :, strcmp(bounds_key, 'in_bounds') );
+m2_bounds = m2.data( :, strcmp(bounds_key, 'in_bounds') );
+inds_m1 = find_logical_starts( m1_bounds == 1, n_samples );
+inds_m2 = find_logical_starts( m2_bounds == 1, n_samples );
+m1_bounds(:) = 0;
+m2_bounds(:) = 0;
+for i = 1:numel(inds_m1)
+  m1_bounds( inds_m1(i):inds_m1(i)+n_samples-1 ) = 1;
+end
+for i = 1:numel(inds_m2)
+  m2_bounds( inds_m2(i):inds_m2(i)+n_samples-1 ) = 1;
+end
+
+stop = 1 * 60 * 1000;
+
+x = 1:stop;
+
+plot( x, m1_bounds(x), 'r' );
+
+subplot( 2, 1, 2 );
+plot( x, m2_bounds(x), 'b' );
+
+
+%%
+
+m1 = in_bounds.only( {'pair_id__1', 'siqi'} );
+m2 = in_bounds.only( {'pair_id__1', 'jessica'} );
 
 eg__position_plot( m1, m2, bounds_key );
 
